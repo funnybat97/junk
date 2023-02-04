@@ -1,0 +1,4 @@
+name: Junk
+version: '${project.version}'
+main: funnybat.junk.Junk
+api-version: 1.19
