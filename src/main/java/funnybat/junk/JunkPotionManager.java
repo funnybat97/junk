@@ -12,8 +12,14 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionType;
 
+import java.sql.DriverManager;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 public class JunkPotionManager {
 
+    public List<PotionEffectType> thirstEffects = new ArrayList<>(Arrays.asList(PotionEffectType.SLOW, PotionEffectType.CONFUSION, PotionEffectType.POISON));
     public static Integer durationByEffectType(PotionEffectType type){
         if (type.equals(PotionEffectType.SPEED)) {
 
@@ -39,6 +45,7 @@ public class JunkPotionManager {
         return 60;
     }
     public static PotionEffect buff_speed = new PotionEffect(PotionEffectType.SATURATION, 5, 1);
+
     public static void initRecipe(ItemStack JunkPotion){
         ShapedRecipe recipe = new ShapedRecipe(JunkPotion);
         recipe.shape("IG", "GB");
@@ -48,14 +55,15 @@ public class JunkPotionManager {
         Bukkit.addRecipe(recipe);
     }
 
+
     public static ItemStack initJunkPotion(){
 
-        ItemStack JunkPotion = new Potion(PotionType.LUCK).toItemStack(1);
+        ItemStack JunkPotion = new Potion(PotionType.SPEED).toItemStack(1);
         PotionMeta meta = (PotionMeta) JunkPotion.getItemMeta();
         meta.setDisplayName("Турбач");
         meta.addCustomEffect(buff_speed, true);
-//        meta.addCustomEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, 5, 1), true);
-//        meta.addCustomEffect(new PotionEffect(PotionEffectType.SATURATION, 5, 1), true);
+        meta.addCustomEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, 60*20, 1), true);
+        meta.addCustomEffect(new PotionEffect(PotionEffectType.SATURATION, 60*20, 1), true);
 
         System.out.println("Plugin is started!");
         JunkPotion.setItemMeta(meta);

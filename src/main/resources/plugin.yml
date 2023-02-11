@@ -2,3 +2,6 @@ name: Junk
 version: '${project.version}'
 main: funnybat.junk.Junk
 api-version: 1.19
+commands:
+  junk_event:
+    description: Junk event commands
