@@ -135,7 +135,7 @@ public class DBHandler {
             while (rs.next()){
                 System.out.println(rs.getTime("last_consume_time"));
                 LocalTime time_to_debuff = rs.getTime("last_consume_time").toLocalTime();
-                time_to_debuff.plusMinutes(1);
+                time_to_debuff.plusMinutes(15);
                 if (now.isAfter(time_to_debuff)){
                     users_to_update.add(rs.getInt("user_id"));
 

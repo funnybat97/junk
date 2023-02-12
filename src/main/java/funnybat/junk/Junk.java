@@ -71,8 +71,7 @@ public final class Junk extends JavaPlugin implements Listener {
                 DB.users_reload_debuffs(JunkManager);
                 // code here
             }
-        //}, 0, 20 * 60 * 15);
-        }, 0, 20 * 60);
+        }, 0, 20 * 60*15);
 
     }
     public void onDisable(){
