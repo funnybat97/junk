@@ -1,6 +1,7 @@
 package funnybat.junk;
 
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -8,6 +9,7 @@ import java.io.InputStream;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.List;
 
 import funnybat.junk.commands.CommandManager;
 import org.bukkit.conversations.MessagePrompt;
@@ -35,6 +37,7 @@ import org.yaml.snakeyaml.Yaml;
 
 public final class Junk extends JavaPlugin implements Listener {
     public ItemStack JunkPotion;
+    public ItemStack CurePotion;
     public JunkPotionManager JunkManager = new JunkPotionManager();
     public Boolean JunkEventStatus;
     public DBHandler DB;
@@ -47,11 +50,13 @@ public final class Junk extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
+
         board_manager = Bukkit.getScoreboardManager();
         board = board_manager.getNewScoreboard();
-        event_team = board.registerNewTeam("junk_event");
+        event_team = board.registerNewTeam("Наркоши");
         System.out.println("Start Junk Plugin");
         JunkPotion = JunkManager.initJunkPotion();
+        CurePotion = JunkManager.initCurePotion();
         DB = new DBHandler(this);
         DB.conn = DB.creatConnector();
         DB.initAll();
@@ -66,7 +71,8 @@ public final class Junk extends JavaPlugin implements Listener {
                 DB.users_reload_debuffs(JunkManager);
                 // code here
             }
-        }, 0, 20 * 60 * 15);
+        //}, 0, 20 * 60 * 15);
+        }, 0, 20 * 60);
 
     }
     public void onDisable(){
@@ -80,19 +86,27 @@ public final class Junk extends JavaPlugin implements Listener {
     public void onEnter(PlayerJoinEvent event) throws SQLException {
         Player player = event.getPlayer();
         player.getInventory().addItem(JunkPotion);
+        player.getInventory().addItem(CurePotion);
 
     }
     @EventHandler
-    public void onPlayerItemConsume(PlayerItemConsumeEvent event) {
+    public void onPlayerItemConsume(PlayerItemConsumeEvent event) throws SQLException {
         Player player = event.getPlayer();
         ItemStack item = event.getItem();
         System.out.println(item.getItemMeta());
         System.out.println(item.getType());
         System.out.println(player.getName());
         String player_name =player.getName();
-        event_team.addPlayer(player);
-       if (item.getItemMeta().equals(JunkPotion.getItemMeta())) {
-           player.sendMessage("Бахаешь?");
+        if (item.getItemMeta().equals(CurePotion.getItemMeta())) {
+            Bukkit.broadcastMessage(player.getName()+ " всех вылечил! Зависимость прошла!");
+            event_team.unregister();
+            Integer event_id = DB.get_current_event();
+            DB.stop_event_by_id(event_id);
+        }
+
+        if (item.getItemMeta().equals(JunkPotion.getItemMeta())) {
+            event_team.addPlayer(player);
+           player.sendMessage("Теперь ты крутой.");
 
            DB.add_user(player_name);
            DB.add_user_event_stat(player_name);

@@ -126,6 +126,7 @@ public class DBHandler {
     public static void users_reload_debuffs(JunkPotionManager JunkManager)  {
 
         try {
+            System.out.println("Start users_reload_debuffs");
             List<PotionEffectType> thirstEffects = JunkManager.thirstEffects;
             Integer event_id = get_current_event_active();
             ResultSet rs = get_users_event_stat(event_id);
@@ -134,7 +135,7 @@ public class DBHandler {
             while (rs.next()){
                 System.out.println(rs.getTime("last_consume_time"));
                 LocalTime time_to_debuff = rs.getTime("last_consume_time").toLocalTime();
-                time_to_debuff.plusMinutes(15);
+                time_to_debuff.plusMinutes(1);
                 if (now.isAfter(time_to_debuff)){
                     users_to_update.add(rs.getInt("user_id"));
 
@@ -207,6 +208,15 @@ public class DBHandler {
                 "update events " +
                         "set end_date = CURRENT_TIMESTAMP "+
                         "where event_name = '" + name + "'";
+        run_sql(sql,"Error during event stop");
+    }
+
+    public static void stop_event_by_id(Integer id){
+
+        String sql =
+                "update events " +
+                        "set end_date = CURRENT_TIMESTAMP "+
+                        "where id = " + id + ";";
         run_sql(sql,"Error during event stop");
     }
     public static void create_event(String name){

@@ -54,6 +54,20 @@ public class JunkPotionManager {
         recipe.setIngredient('B', Material.GLASS_BOTTLE);
         Bukkit.addRecipe(recipe);
     }
+    public static void initRecipeCure(ItemStack CurePotion){
+        ShapedRecipe recipe = new ShapedRecipe(CurePotion);
+        recipe.shape("123", "456", "789");
+        recipe.setIngredient('1', Material.TURTLE_EGG);
+        recipe.setIngredient('2', Material.HEART_OF_THE_SEA);
+        recipe.setIngredient('3', Material.SCULK_SENSOR);
+        recipe.setIngredient('4', Material.DEEPSLATE_COAL_ORE);
+        recipe.setIngredient('5', Material.DRAGON_EGG);
+        recipe.setIngredient('6', Material.WITHER_ROSE);
+        recipe.setIngredient('7', Material.GOAT_HORN);
+        recipe.setIngredient('8', Material.NETHERITE_INGOT);
+        recipe.setIngredient('9', Material.WITHER_SKELETON_SKULL);
+        Bukkit.addRecipe(recipe);
+    }
 
 
     public static ItemStack initJunkPotion(){
@@ -65,9 +79,20 @@ public class JunkPotionManager {
         meta.addCustomEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, 60*20, 1), true);
         meta.addCustomEffect(new PotionEffect(PotionEffectType.SATURATION, 60*20, 1), true);
 
-        System.out.println("Plugin is started!");
         JunkPotion.setItemMeta(meta);
         JunkPotionManager.initRecipe(JunkPotion);
         return JunkPotion;
     }
+    public static ItemStack initCurePotion(){
+
+        ItemStack CurePotion = new Potion(PotionType.SPEED).toItemStack(1);
+        PotionMeta meta = (PotionMeta) CurePotion.getItemMeta();
+        meta.setDisplayName("Лекарство");
+        meta.addCustomEffect(buff_speed, true);
+        CurePotion.setItemMeta(meta);
+
+        JunkPotionManager.initRecipeCure(CurePotion);
+        return CurePotion;
+    }
+
 }
