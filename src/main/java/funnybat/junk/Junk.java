@@ -84,8 +84,7 @@ public final class Junk extends JavaPlugin implements Listener {
     @EventHandler
     public void onEnter(PlayerJoinEvent event) throws SQLException {
         Player player = event.getPlayer();
-        player.getInventory().addItem(JunkPotion);
-        player.getInventory().addItem(CurePotion);
+
 
     }
     @EventHandler
